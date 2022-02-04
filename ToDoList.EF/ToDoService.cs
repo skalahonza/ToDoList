@@ -28,7 +28,7 @@ public class ToDoService : ITodoService
                 list.Name,
                 list.Description,
                 list.Items.Select(item => new ToDoListItemDto(item.Id, item.Description)).ToList()))
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(x => x.Id == id);
 
     public async Task<ToDoListDetailDto?> AddNew(CreateToDoListDto newToDo)
     {
