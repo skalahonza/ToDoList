@@ -28,7 +28,6 @@ public class TodoController : ApiController
     /// <exception cref="NotImplementedException"></exception>
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesDefaultResponseType]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<ToDoListDetailDto>> GetDetail(int id)
     {
@@ -44,7 +43,6 @@ public class TodoController : ApiController
     /// <exception cref="NotImplementedException"></exception>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesDefaultResponseType]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<ToDoListDetailDto>> AddNew(CreateToDoListDto newToDo)
     {
@@ -61,7 +59,6 @@ public class TodoController : ApiController
     /// <exception cref="NotImplementedException"></exception>
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesDefaultResponseType]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<ToDoListDetailDto>> UpdateExisting(int id, UpdateToDoListDto toDo)
     {
@@ -77,7 +74,7 @@ public class TodoController : ApiController
     /// <exception cref="NotImplementedException"></exception>
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesDefaultResponseType]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> DeleteExisting(int id)
     {
         var result = await _service.DeleteExisting(id);
@@ -93,7 +90,6 @@ public class TodoController : ApiController
     /// <exception cref="NotImplementedException"></exception>
     [HttpPost("{id}/items")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesDefaultResponseType]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<ToDoListItemDto>> AddToDoListItem(int id, AddToDoListItemDto item)
     {
@@ -111,7 +107,6 @@ public class TodoController : ApiController
     /// <exception cref="NotImplementedException"></exception>
     [HttpPut("{todoListId}/items/{itemId}")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesDefaultResponseType]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<ToDoListItemDto>> UpdateToDoListItem(int todoListId, int itemId,
         AddToDoListItemDto item)
@@ -129,7 +124,7 @@ public class TodoController : ApiController
     /// <exception cref="NotImplementedException"></exception>
     [HttpDelete("{todoListId}/items/{itemId}")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesDefaultResponseType]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> DeleteToDoListItem(int todoListId, int itemId)
     {
         var result = await _service.DeleteToDoListItem(todoListId, itemId);
