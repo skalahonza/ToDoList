@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.API", "ToDoList.AP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.EF", "ToDoList.EF\ToDoList.EF.csproj", "{79A9A069-C04D-437A-BA5C-EE5E7B68DE6F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Mongo", "ToDoList.Mongo\ToDoList.Mongo.csproj", "{8DA8A0A6-2BCA-4C62-A976-44462BD70A60}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{79A9A069-C04D-437A-BA5C-EE5E7B68DE6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79A9A069-C04D-437A-BA5C-EE5E7B68DE6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79A9A069-C04D-437A-BA5C-EE5E7B68DE6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DA8A0A6-2BCA-4C62-A976-44462BD70A60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DA8A0A6-2BCA-4C62-A976-44462BD70A60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DA8A0A6-2BCA-4C62-A976-44462BD70A60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DA8A0A6-2BCA-4C62-A976-44462BD70A60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

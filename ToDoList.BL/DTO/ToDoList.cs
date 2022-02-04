@@ -6,7 +6,7 @@ public record UpdateToDoListDto(string Name, string Description);
 
 public record ToDoListInfoDto(int Id, string Name, string Description);
 
-public record ToDoListDetailDto(int Id, string Name, string Description, List<ToDoListItemDto> Items);
+public record ToDoListDetailDto(int Id, string Name, string Description, IEnumerable<ToDoListItemDto> Items);
 
 public record AddToDoListItemDto(string Description);
 

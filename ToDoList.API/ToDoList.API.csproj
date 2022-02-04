@@ -29,6 +29,7 @@
     <ItemGroup>
         <ProjectReference Include="..\ToDoList.BL\ToDoList.BL.csproj"/>
         <ProjectReference Include="..\ToDoList.EF\ToDoList.EF.csproj"/>
+        <ProjectReference Include="..\ToDoList.Mongo\ToDoList.Mongo.csproj"/>
     </ItemGroup>
 
 </Project>
