@@ -6,17 +6,17 @@ public interface ITodoService
 {
     Task<List<ToDoListInfoDto>> GetAll();
 
-    Task<ToDoListDetailDto?> GetDetail(Guid id);
+    Task<ToDoListDetailDto?> GetDetail(int id);
 
     Task<ToDoListDetailDto?> AddNew(CreateToDoListDto newToDo);
 
-    Task<ToDoListDetailDto?> UpdateExisting(Guid id, UpdateToDoListDto toDo);
+    Task<ToDoListDetailDto?> UpdateExisting(int id, UpdateToDoListDto toDo);
 
-    Task<bool> DeleteExisting(Guid id);
+    Task<bool> DeleteExisting(int id);
 
-    Task<ToDoListItemDto?> AddToDoListItem(Guid id, AddToDoListItemDto item);
+    Task<ToDoListItemDto?> AddToDoListItem(int id, AddToDoListItemDto item);
 
-    Task<ToDoListItemDto?> UpdateToDoListItem(Guid todoListId, Guid itemId, AddToDoListItemDto item);
+    Task<ToDoListItemDto?> UpdateToDoListItem(int todoListId, int itemId, AddToDoListItemDto item);
 
-    Task<bool> DeleteToDoListItem(Guid todoListId, Guid itemId);
+    Task<bool> DeleteToDoListItem(int todoListId, int itemId);
 }

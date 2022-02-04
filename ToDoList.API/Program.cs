@@ -1,7 +1,9 @@
 using System.Reflection;
 using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
+using Microsoft.EntityFrameworkCore;
 using ToDoList.BL.Validations;
+using ToDoList.EF;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +32,19 @@ builder.Services.Configure<RouteOptions>(options =>
     options.LowercaseQueryStrings = true;
 });
 
+// Postgres database
+builder.Services.AddPostgresImplementation(builder.Configuration);
+
 var app = builder.Build();
+
+// apply migrations to DB
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<ToDoDbContext>();
+    await context.Database.MigrateAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

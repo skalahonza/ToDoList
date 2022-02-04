@@ -1,20 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ToDoList.BL;
 using ToDoList.BL.DTO;
 
 namespace ToDoList.API.Controllers;
 
 public class TodoController : ApiController
 {
+    private readonly ITodoService _service;
+
+    public TodoController(ITodoService service) =>
+        _service = service;
+
     /// <summary>
     /// Get all To-Do lists.
     /// </summary>
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
     [HttpGet]
-    public Task<ActionResult<List<ToDoListInfoDto>>> GetAll()
-    {
-        throw new NotImplementedException();
-    }
+    public Task<List<ToDoListInfoDto>> GetAll() =>
+        _service.GetAll();
 
     /// <summary>
     /// Get To-Do list detail.
@@ -23,9 +27,13 @@ public class TodoController : ApiController
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
     [HttpGet("{id}")]
-    public Task<ActionResult<ToDoListDetailDto>> GetDetail(Guid id)
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesDefaultResponseType]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<ToDoListDetailDto>> GetDetail(int id)
     {
-        throw new NotImplementedException();
+        var detail = await _service.GetDetail(id);
+        return OkOrNotFound(detail);
     }
 
     /// <summary>
@@ -35,9 +43,13 @@ public class TodoController : ApiController
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
     [HttpPost]
-    public Task<ActionResult<ToDoListDetailDto>> AddNew(CreateToDoListDto newToDo)
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesDefaultResponseType]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<ToDoListDetailDto>> AddNew(CreateToDoListDto newToDo)
     {
-        throw new NotImplementedException();
+        var detail = await _service.AddNew(newToDo);
+        return OkOrNotFound(detail);
     }
 
     /// <summary>
@@ -48,9 +60,13 @@ public class TodoController : ApiController
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
     [HttpPut("{id}")]
-    public Task<ActionResult<ToDoListDetailDto>> UpdateExisting(Guid id, UpdateToDoListDto toDo)
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesDefaultResponseType]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<ToDoListDetailDto>> UpdateExisting(int id, UpdateToDoListDto toDo)
     {
-        throw new NotImplementedException();
+        var detail = await _service.UpdateExisting(id, toDo);
+        return OkOrNotFound(detail);
     }
 
     /// <summary>
@@ -60,9 +76,12 @@ public class TodoController : ApiController
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
     [HttpDelete("{id}")]
-    public Task<ActionResult<IActionResult>> DeleteExisting(Guid id)
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesDefaultResponseType]
+    public async Task<IActionResult> DeleteExisting(int id)
     {
-        throw new NotImplementedException();
+        var result = await _service.DeleteExisting(id);
+        return OkOrNotFound(result);
     }
 
     /// <summary>
@@ -73,9 +92,13 @@ public class TodoController : ApiController
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
     [HttpPost("{id}/items")]
-    public Task<ActionResult<ToDoListItemDto>> AddToDoListItem(Guid id, AddToDoListItemDto item)
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesDefaultResponseType]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<ToDoListItemDto>> AddToDoListItem(int id, AddToDoListItemDto item)
     {
-        throw new NotImplementedException();
+        var detail = await _service.AddToDoListItem(id, item);
+        return OkOrNotFound(detail);
     }
 
     /// <summary>
@@ -87,9 +110,14 @@ public class TodoController : ApiController
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
     [HttpPut("{todoListId}/items/{itemId}")]
-    public Task<ActionResult<ToDoListItemDto>> UpdateToDoListItem(Guid todoListId, Guid itemId, AddToDoListItemDto item)
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesDefaultResponseType]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<ToDoListItemDto>> UpdateToDoListItem(int todoListId, int itemId,
+        AddToDoListItemDto item)
     {
-        throw new NotImplementedException();
+        var detail = await _service.UpdateToDoListItem(todoListId, itemId, item);
+        return OkOrNotFound(detail);
     }
 
     /// <summary>
@@ -100,8 +128,11 @@ public class TodoController : ApiController
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
     [HttpDelete("{todoListId}/items/{itemId}")]
-    public Task<IActionResult> DeleteToDoListItem(Guid todoListId, Guid itemId)
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesDefaultResponseType]
+    public async Task<IActionResult> DeleteToDoListItem(int todoListId, int itemId)
     {
-        throw new NotImplementedException();
+        var result = await _service.DeleteToDoListItem(todoListId, itemId);
+        return OkOrNotFound(result);
     }
 }

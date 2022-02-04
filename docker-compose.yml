@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=Your_password123
+      - POSTGRES_DB=todo
+    ports:
+      - "5432:5432"
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_DATABASE: todo
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    ports:
+      - "27017:27017"
