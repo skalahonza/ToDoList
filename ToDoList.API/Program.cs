@@ -1,7 +1,9 @@
 using System.Reflection;
 using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
+using Microsoft.EntityFrameworkCore;
 using ToDoList.BL.Validations;
+using ToDoList.EF;
 using ToDoList.Mongo;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,24 +33,31 @@ builder.Services.Configure<RouteOptions>(options =>
     options.LowercaseQueryStrings = true;
 });
 
-// MongoDB
-builder.Services.AddMongoDbImplementation(builder.Configuration);
+var mode = ParseMode(args);
 
-// Postgres database
-// builder.Services.AddPostgresImplementation(builder.Configuration);
+switch (mode)
+{
+    case Mode.Postgres:
+        Console.WriteLine(" === Running in Postgres mode. === ");
+        builder.Services.AddPostgresImplementation(builder.Configuration);
+        break;
+    case Mode.MongoDb:
+        Console.WriteLine(" === Running in MongoDb mode. === ");
+        builder.Services.AddMongoDbImplementation(builder.Configuration);
+        break;
+}
 
 var app = builder.Build();
 
-// apply migrations to DB
-/*
-using (var scope = app.Services.CreateScope())
+if (mode == Mode.Postgres)
 {
+    // apply migrations to DB
+    using var scope = app.Services.CreateScope();
     var services = scope.ServiceProvider;
 
     var context = services.GetRequiredService<ToDoDbContext>();
     await context.Database.MigrateAsync();
 }
-*/
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -64,3 +73,22 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// For DEMO only
+static Mode ParseMode(string[] args)
+{
+    return args switch
+    {
+        {Length: 0} => Mode.Postgres,
+        {Length: 1} when args.Contains("postgres", StringComparer.OrdinalIgnoreCase) => Mode.Postgres,
+        {Length: 1} when args.Contains("mongo", StringComparer.OrdinalIgnoreCase) => Mode.MongoDb,
+        _ => throw new ArgumentException(
+            "Only allowed parameters are none, postgres and mongo. e.g. 'dotnet run' or 'dotnet run -- mongo' or 'dotnet run postgres'")
+    };
+}
+
+enum Mode
+{
+    Postgres,
+    MongoDb
+}
