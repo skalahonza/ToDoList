@@ -23,12 +23,13 @@ public class ToDoService : ITodoService
     public Task<ToDoListDetailDto?> GetDetail(int id) =>
         _context
             .Lists
+            .Where(x => x.Id == id)
             .Include(x => x.Items)
             .Select(list => new ToDoListDetailDto(list.Id,
                 list.Name,
                 list.Description,
-                list.Items.Select(item => new ToDoListItemDto(item.Id, item.Description)).ToList()))
-            .FirstOrDefaultAsync(x => x.Id == id);
+                list.Items.Select(item => new ToDoListItemDto(item.Id, item.Description))))
+            .FirstOrDefaultAsync();
 
     public async Task<ToDoListDetailDto?> AddNew(CreateToDoListDto newToDo)
     {
