@@ -2,9 +2,11 @@ using System.Reflection;
 using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using ToDoList.API;
 using ToDoList.BL.Validations;
 using ToDoList.EF;
-using ToDoList.Mongo;
+using ToDoList.Mongo.Extensions;
+using ToDoList.Mongo.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +45,7 @@ switch (mode)
         break;
     case Mode.MongoDb:
         Console.WriteLine(" === Running in MongoDb mode. === ");
+        builder.Services.AddAutoMapper(typeof(ToDoProfile));
         builder.Services.AddMongoDbImplementation(builder.Configuration);
         break;
 }
@@ -87,8 +90,11 @@ static Mode ParseMode(string[] args)
     };
 }
 
-enum Mode
+namespace ToDoList.API
 {
-    Postgres,
-    MongoDb
+    enum Mode
+    {
+        Postgres,
+        MongoDb
+    }
 }

@@ -78,7 +78,11 @@ public class ToDoService : ITodoService
         };
         list.Items.Add(todoItem);
         await _context.SaveChangesAsync();
-        return new ToDoListItemDto(todoItem.Id, todoItem.Description);
+        return new ToDoListItemDto
+        {
+            Id = todoItem.Id,
+            Description = todoItem.Description
+        };
     }
 
     public async Task<ToDoListItemDto?> UpdateToDoListItem(int todoListId, int itemId, AddToDoListItemDto item)
@@ -89,7 +93,11 @@ public class ToDoService : ITodoService
 
         todoItem.Description = item.Description;
         await _context.SaveChangesAsync();
-        return new ToDoListItemDto(todoItem.Id, todoItem.Description);
+        return new ToDoListItemDto
+        {
+            Id = todoItem.Id,
+            Description = todoItem.Description
+        };
     }
 
     public async Task<bool> DeleteToDoListItem(int todoListId, int itemId)

@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using ToDoList.BL;
 
-namespace ToDoList.Mongo;
+namespace ToDoList.Mongo.Extensions;
 
 public static class DependencyInjectionExtensions
 {

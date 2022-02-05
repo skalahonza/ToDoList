@@ -1,34 +1,43 @@
-﻿using MongoDB.Driver;
+﻿using AutoMapper;
+using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using ToDoList.BL;
 using ToDoList.BL.DTO;
 using ToDoList.Mongo.Entities;
+using ToDoList.Mongo.Extensions;
 
 namespace ToDoList.Mongo;
 
 public class ToDoService : ITodoService
 {
     private readonly ToDoMongoDbContext _context;
+    private readonly IMapper _mapper;
 
-    public ToDoService(ToDoMongoDbContext context) =>
+    public ToDoService(ToDoMongoDbContext context, IMapper mapper)
+    {
         _context = context;
+        _mapper = mapper;
+    }
 
     public Task<List<ToDoListInfoDto>> GetAll() =>
         _context
             .Lists
             .AsQueryable()
-            .Select(list => new ToDoListInfoDto(list.Id, list.Name, list.Description))
+            .MapTo<ToDoListInfoDto>(_mapper)
+            //.Select(list => new ToDoListInfoDto(list.Id, list.Name, list.Description))
             .ToListAsync();
 
     public Task<ToDoListDetailDto?> GetDetail(int id) =>
         _context
             .Lists
             .AsQueryable()
-            .Select(list => new ToDoListDetailDto(list.Id,
+            .Where(x => x.Id == id)
+            .MapTo<ToDoListDetailDto>(_mapper)
+            /*.Select(list => new ToDoListDetailDto(list.Id,
                 list.Name,
                 list.Description,
-                list.Items.Select(item => new ToDoListItemDto(item.Id, item.Description))))
-            .FirstOrDefaultAsync(x => x.Id == id)!;
+                list.Items.Select(item => new ToDoListItemDto(item.Id, item.Description))))*/
+            .FirstOrDefaultAsync()!;
 
     public async Task<ToDoListDetailDto?> AddNew(CreateToDoListDto newToDo)
     {
@@ -73,7 +82,7 @@ public class ToDoService : ITodoService
         var result = await _context.Lists.UpdateOneAsync(x => x.Id == id, update);
         return result is {MatchedCount: 0}
             ? null
-            : new ToDoListItemDto(todoItem.Id, todoItem.Description);
+            : new ToDoListItemDto {Id = todoItem.Id, Description = todoItem.Description};
     }
 
     public async Task<ToDoListItemDto?> UpdateToDoListItem(int todoListId, int itemId, AddToDoListItemDto item)
@@ -90,7 +99,7 @@ public class ToDoService : ITodoService
         var result = await _context.Lists.UpdateOneAsync(filter, update);
         return result is {MatchedCount: 0}
             ? null
-            : new ToDoListItemDto(itemId, item.Description);
+            : new ToDoListItemDto {Id = itemId, Description = item.Description};
     }
 
     public async Task<bool> DeleteToDoListItem(int todoListId, int itemId)
