@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Mapster;
+using Microsoft.EntityFrameworkCore;
 using ToDoList.BL;
 using ToDoList.BL.DTO;
 using ToDoList.EF.Entities;
@@ -17,7 +18,8 @@ public class ToDoService : ITodoService
     public Task<List<ToDoListInfoDto>> GetAll() =>
         _context
             .Lists
-            .Select(list => new ToDoListInfoDto(list.Id, list.Name, list.Description))
+            .ProjectToType<ToDoListInfoDto>()
+            /*.Select(list => new ToDoListInfoDto(list.Id, list.Name, list.Description))*/
             .ToListAsync();
 
     public Task<ToDoListDetailDto?> GetDetail(int id) =>
@@ -25,10 +27,11 @@ public class ToDoService : ITodoService
             .Lists
             .Where(x => x.Id == id)
             .Include(x => x.Items)
-            .Select(list => new ToDoListDetailDto(list.Id,
+            .ProjectToType<ToDoListDetailDto>()
+            /*.Select(list => new ToDoListDetailDto(list.Id,
                 list.Name,
                 list.Description,
-                list.Items.Select(item => new ToDoListItemDto(item.Id, item.Description))))
+                list.Items.Select(item => new ToDoListItemDto(item.Id, item.Description))))*/
             .FirstOrDefaultAsync();
 
     public async Task<ToDoListDetailDto?> AddNew(CreateToDoListDto newToDo)
