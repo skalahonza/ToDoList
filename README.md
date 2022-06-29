@@ -30,3 +30,11 @@ Implementation of To Do List using MongoDb.
 
 ### Aplying migrations
 App applies migrations during start.
+
+```mermaid
+  graph TD;
+      A-->B;
+      A-->C;
+      B-->D;
+      C-->D;
+```
