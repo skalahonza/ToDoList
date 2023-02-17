@@ -1,0 +1,20 @@
+name: Test of version printing
+
+on:
+  workflow_dispatch:
+  release:
+    types: [ published ]
+        
+jobs:  
+  release:
+    runs-on: ubuntu-latest
+    steps:      
+      # set release version to the latest commit and tag if it is a release
+      # detect tag by observing GITHUB_REF_TYPE
+      - name: Set Release Version
+        run: |
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            echo "RELEASE_VERSION=${GITHUB_SHA};${GITHUB_REF#refs/tags/}" #>> $GITHUB_ENV
+          else
+            echo "RELEASE_VERSION=${GITHUB_SHA}" #>> $GITHUB_ENV
+          fi
